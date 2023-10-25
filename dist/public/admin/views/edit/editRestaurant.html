@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin | Jroute</title>
+    <link rel="icon" href="../../admin/assets/img/trucklogo.png" type="image">
+
+    <link rel="stylesheet" href="../../admin/assets/paginate/bs-pagination.min.css">
+    <script src="//code.jquery.com/jquery.min.js"></script>
+    <script src="../../admin/assets/paginate/pagination.min.js"></script>
+
+    <!-- goolgle api  AIzaSyDIKiU6onrRi-GyEf6tdqGoEKmyYtFzFJs -->
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIKiU6onrRi-GyEf6tdqGoEKmyYtFzFJs&callback=initAutocomplete&libraries=places">
+        </script>
+
+    <!--<link rel="stylesheet" href="dist/pagination.min.css">-->
+    <link href="../../admin//assets/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="../../admin/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../admin/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="../../admin/assets/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="../../admin/assets/css/animate.css" rel="stylesheet">
+    <link href="../../admin/assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../../admin/assets/paginate/pagination.min.css">
+
+    <!-- timing -->
+    <script src="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.css" rel="stylesheet" />
+
+
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <script src="../../admin/scripts/common/pipeline.js"></script>
+    <script src="../../admin/scripts/common/validation.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+    <!-- js files -->
+    <script src="../../admin/scripts/auth/logout.js"></script>
+    <script src="../../admin/scripts/dashboard.js"></script>
+    <script src="../../admin/scripts/add/editRestaurant.js"></script>
+    <script src="../../admin/scripts/helper/button.js"></script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-messaging.js"></script>
+    <script src="../../admin/scripts/index/index.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.12/css/intlTelInput.css" />
+    <link rel="stylesheet" href="../css/intlTelInput.css">
+    <link rel='stylesheet' type="text/css" href='https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css'>
+    <link rel='stylesheet' type="text/css"
+        href='https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css'>
+    <link rel='stylesheet' type="text/css"
+        href='https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.2/css/intlTelInput.css'>
+    <script src="https://unpkg.com/libphonenumber-js/bundle/libphonenumber-js.min.js"></script>
+
+
+    <style type="text/css">
+        .container {
+            margin: 100px auto;
+        }
+
+        input.storeImage_file {
+            width: 150px !important;
+            height: 150px !important;
+            cursor: pointer;
+        }
+
+        .innerSec {
+            border: 1px solid #1AB394;
+            padding: 10px;
+        }
+
+        /* .form-control,
+        .single-line {
+            border: 1px solid #1AB394;
+            border-radius: 7px;
+        }
+
+        input:focus {
+            border: 1px solid #1AB394 !important;
+
+        } */
+
+
+
+        .button {
+            justify-self: start;
+            /* Align items to the left */
+        }
+
+
+        input.storeImage_file {
+            position: absolute;
+            top: 35px;
+            height: 130px;
+            width: 140px;
+            left: 15px;
+            opacity: 0;
+            z-index: -1;
+            cursor: pointer;
+        }
+
+        input,
+        select {
+            height: 50px !important;
+        }
+
+        .addVendor_cancel {
+            border: 1px solid #1AB394;
+            color: #1AB394;
+
+        }
+
+        .addVendor_cancel:hover {
+            border: 1px solid #1AB394;
+            color: #1AB394;
+
+        }
+
+        @media only screen and (max-width: 992px) {
+            .lastline {
+                margin: 0px !important;
+                width: 100% !important;
+                display: inline-block !important;
+            }
+        }
+    </style>
+
+</head>
+
+<body onload="classActive();details();">
+    <div id="wrapper">
+        <navbar></navbar>
+        <div id="page-wrapper" class="gray-bg">
+            <div class="border-bottom">
+                <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 menuBtn" href="#"><i class="fa fa-bars"></i>
+                        </a>
+                        <form role="search" class="navbar-form-custom" action="search_results.html">
+                        </form>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span class="m-r-sm text-muted welcome-message">Welcome to Meki Admin</span>
+                        </li>
+
+                        <li><a class="dropdown-item" onclick="logout()">Logout <img
+                                    src="../../../admin/assets/img/logout .png"></a></li>
+                    </ul>
+
+                </nav>
+            </div>
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <!-- <div class="ibox-title d-flex align-items-center justify-content-between"
+                    style="background-color: #1AB394;">
+                    <h3 style="color: aliceblue;padding-left: 694px;"><strong>Details</strong></h3>
+                </div> -->
+                <div class="d-flex align-items-center">
+                    <h2><strong style="color: darkblue;font-weight: bold;margin-left: 46px;">Details</strong></h2>
+                    <hr class="custom-line" style="width: 88%;">
+                </div>
+                <div>
+                    <form id="form" method="post" enctype="multipart/form-data" class="maxwidth py-3 px-5 mt-3"
+                        role="form">
+                        <div class="ibox ">
+                            <div class="ibox-content">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-12 ">
+                                            <div class="form-group d-flex align-items-center">
+                                                <div class="col-lg  -4 col-md-5 col-12 form-group"
+                                                    style="text-align: left;">
+                                                    <label id="restaurantImage" style="cursor: pointer;"> <img
+                                                            id="blah1" src="../../admin/assets/img/emptyphoto.png"
+                                                            alt="" style="width:200px; height:200px;"><br>
+                                                </div>
+                                                <div class="d-flex align-items-center"
+                                                    style="margin-bottom:10%;margin-left: 23px;">
+                                                    <div>
+                                                        <h2 style="font-weight: bold;">Upload Branch Image*</h2>
+                                                        <input type="file" name="restaurantImage" id="imageInput"
+                                                            accept="image/*" onchange="readURL1(this)" />
+                                                    </div>
+                                                    <div>
+                                                        <h3>Image size: 300×300</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                                            <div class="form-group">
+                                                <h4>Restaurant Name in English</h4>
+                                                <input type="text" oninput="validate(this)" class="form-control"
+                                                    id="restaurantName1" name="restaurantName1"
+                                                    placeholder=" Enter Restaurant in (English)" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="form-group">
+                                                <h4>Restaurant Name in Mesodonian</h4>
+                                                <input type="text" oninput="validate(this)" class="form-control"
+                                                    id="restaurant_mesoName1" name="restaurant_mesoName1"
+                                                    placeholder=" Enter Restaurant Name in (Mesodonian)" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="display: none;">
+                                        <input type="text" oninput="validate(this)" class="form-control" id="vendorId"
+                                            name="vendorId" placeholder=" Enter Restaurant Name in (Mesodonian)"
+                                            readonly>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                                            <div class="form-group">
+                                                <h4>Restaurant Owner Name</h4>
+                                                <input type="text" oninput="validate(this)" class="form-control"
+                                                    id="name1" name="name1"
+                                                    placeholder=" Enter Restaurant Name in (Mesodonian)" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="form-group">
+                                                <h4>Admin Percentage</h4>
+                                                <input type="text" oninput="validateNumber(event)" class="form-control"
+                                                    id="adminPercentage" name="adminPercentage"
+                                                    placeholder=" Enter Percentage" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-right">
+                                    <a href="/Submit"><button style="width: 33%;color: white;"
+                                            class="btn btn-orange btn-lg " id="submit">Submit</button></a>
+
+                                </div>
+                            </div>
+                            <!-- <div class="modal-footer">
+                                <button type="button" class="btn btn-white block half-width m-b addVendor_cancel"
+                                    data-dismiss="modal" onclick="cancel()">Cancel</button>
+                                <a href="/Submit"><button
+                                        class="btn btn-primary block half-width m-b">Submit</button></a>
+                            </div> -->
+                        </div>
+                </div>
+                <!-- </form> -->
+            </div>
+        </div>
+        <!-- Mainly scripts -->
+        <script src="../../admin/assets/js/jquery-3.1.1.min.js"></script>
+        <script src="../../admin/assets/js/popper.min.js"></script>
+        <script src="../../admin/assets/js/bootstrap.js"></script>
+        <script src="../../admin/assets/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+        <script src="../../admin/assets/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+        <!-- Peity -->
+        <script src="../../admin/assets/js/plugins/peity/jquery.peity.min.js"></script>
+
+        <!-- Custom and plugin javascript -->
+        <script src="../../admin/assets/js/inspinia.js"></script>
+        <script src="../../admin/assets/js/plugins/pace/pace.min.js"></script>
+
+        <!-- iCheck -->
+        <script src="../../admin/assets/js/plugins/iCheck/icheck.min.js"></script>
+
+        <!-- Peity -->
+        <script src="../../admin/assets/js/demo/peity-demo.js"></script>
+        <script type="text/javascript" src="../../admin/assets/paginate/pagination.min.js"></script>
+        <script src="assets/js/plugins/sweetalert/sweetalert.min.js"></script>
+        <script
+            src='https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.2/js/intlTelInput.js'></script>
+        <script src="https://unpkg.com/libphonenumber-js/bundle/libphonenumber-js.min.js"></script>
+
+        <script>
+            var token = localStorage.getItem("token");
+            var host = window.location.protocol + "//" + window.location.host;
+            if (!token) {
+                localStorage.removeItem("name");
+                localStorage.removeItem("token");
+                window.location.replace('/login');
+            }
+            var currentLocation = window.location.href;
+            var url = new URL(currentLocation);
+            var vendorId = url.searchParams.get("id");
+
+            $("#form").submit(function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+
+                const submitButton = document.getElementById("submit");
+                submitButton.disabled = true;
+                submitButton.innerHTML = "Submitting...";
+                $.ajax({
+                    url: host + '/api/v1/admin/restaurant/edit',
+                    type: 'Put',
+                    data: formData,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', token);
+                        // xhr.setRequestHeader('timezone', localStorage.getItem('timeZone'));
+                    },
+                    contentType: false,
+                    processData: false,
+                }).done(function (data) {
+                    // If successful
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = "Submit";
+                    window.location.replace('/admin/restaurant');
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    // If fail
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = "Submit";
+                    alert(jqXHR.responseJSON.error)
+                })
+            });
+            function readURL1(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#blah1')
+                            .attr('src', e.target.result)
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            function classActive() {
+                this.setTimeout(() => {
+                    document.getElementById('restaurant-nav')?.classList.add("active");
+                }, 1500)
+            }
+
+            function validateNumber(event) {
+                const input = event.target;
+                let value = input.value;
+                value = value.replace(/[^0-9.]/g, '');
+                const parts = value.split('.');
+                if (parts.length > 2) {
+                    parts.pop(); // Remove the last element (extra decimal parts)
+                    value = parts.join('.');
+                }
+                input.value = value;
+            }
+        </script>
+</body>
+
+</html>

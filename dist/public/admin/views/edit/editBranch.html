@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin | Jroute</title>
+    <link rel="icon" href="../../admin/assets/img/trucklogo.png" type="image">
+
+    <link rel="stylesheet" href="../../admin/assets/paginate/bs-pagination.min.css">
+    <script src="//code.jquery.com/jquery.min.js"></script>
+    <script src="../../admin/assets/paginate/pagination.min.js"></script>
+
+    <!-- goolgle api  AIzaSyDIKiU6onrRi-GyEf6tdqGoEKmyYtFzFJs -->
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIKiU6onrRi-GyEf6tdqGoEKmyYtFzFJs&callback=initAutocomplete&libraries=places">
+        </script>
+
+    <!--<link rel="stylesheet" href="dist/pagination.min.css">-->
+    <link href="../../admin//assets/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="../../admin/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../admin/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="../../admin/assets/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="../../admin/assets/css/animate.css" rel="stylesheet">
+    <link href="../../admin/assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../../admin/assets/paginate/pagination.min.css">
+
+    <!-- timing -->
+    <script src="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.css" rel="stylesheet" />
+
+
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <script src="../../admin/scripts/common/pipeline.js"></script>
+    <script src="../../admin/scripts/common/validation.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+    <!-- js files -->
+    <script src="../../admin/scripts/auth/logout.js"></script>
+    <script src="../../admin/scripts/dashboard.js"></script>
+    <script src="../../admin/scripts/add/editBranch.js"></script>
+    <script src="../../admin/scripts/helper/button.js"></script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-messaging.js"></script>
+    <script src="../../admin/scripts/index/index.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.12/css/intlTelInput.css" />
+    <link rel="stylesheet" href="../css/intlTelInput.css">
+    <link rel='stylesheet' type="text/css" href='https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css'>
+    <link rel='stylesheet' type="text/css"
+        href='https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css'>
+    <link rel='stylesheet' type="text/css"
+        href='https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.2/css/intlTelInput.css'>
+    <script src="https://unpkg.com/libphonenumber-js/bundle/libphonenumber-js.min.js"></script>
+
+
+    <style type="text/css">
+        .container {
+            margin: 100px auto;
+        }
+
+        input.storeImage_file {
+            width: 150px !important;
+            height: 150px !important;
+            cursor: pointer;
+        }
+
+        .innerSec {
+            border: 1px solid #1AB394;
+            padding: 10px;
+        }
+
+        input.storeImage_file {
+            position: absolute;
+            top: 35px;
+            height: 130px;
+            width: 140px;
+            left: 15px;
+            opacity: 0;
+            z-index: -1;
+            cursor: pointer;
+        }
+
+        input,
+        select {
+            height: 50px !important;
+        }
+
+        .addVendor_cancel {
+            border: 1px solid #1AB394;
+            color: #1AB394;
+
+        }
+
+        .addVendor_cancel:hover {
+            border: 1px solid #1AB394;
+            color: #1AB394;
+
+        }
+
+        @media only screen and (max-width: 992px) {
+            .lastline {
+                margin: 0px !important;
+                width: 100% !important;
+                display: inline-block !important;
+            }
+        }
+    </style>
+
+</head>
+
+<body onload="classActive();branch_details();autocomplete();timeDropdown();timeDropdown1();">
+    <div id="wrapper">
+        <navbar></navbar>
+        <div id="page-wrapper" class="gray-bg">
+            <div class="border-bottom">
+                <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 menuBtn" href="#"><i class="fa fa-bars"></i>
+                        </a>
+                        <form role="search" class="navbar-form-custom" action="search_results.html">
+                        </form>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span class="m-r-sm text-muted welcome-message">Welcome to Meki Admin</span>
+                        </li>
+
+                        <li><a class="dropdown-item" onclick="logout()">Logout <img
+                                    src="../../../admin/assets/img/logout .png"></a></li>
+                    </ul>
+
+                </nav>
+            </div>
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <div class="ibox-title d-flex align-items-center justify-content-between">
+                    <!-- style="background-color: #1AB394;" -->
+
+                    <h3 style="padding-left: 694px;"><strong style="font-weight: bold;">Update Branch & Details</strong>
+                    </h3>
+                </div>
+                <div>
+                    <form id="form" method="post" enctype="multipart/form-data" class="maxwidth" role="form">
+                        <div class="ibox ">
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <h4>Restaurant Name</h4>
+                                            <input type="text" oninput="validate(this)" class="form-control"
+                                                id="restaurantName" placeholder=" Enter Restaurant in (English)"
+                                                readonly>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-12 col-sm-6col-md-6 col-lg-6">
+                                        <h4>Branch Contact<span style="color: red;">*</span></h4>
+                                        <div class="row mx-0">
+                                            <div class="col-12 d-flex tell-code pl-1">
+                                                <!-- <div> -->
+                                                <input type="tel" id="mobile_countryCode" name="mobile_countryCode"
+                                                    class="form-control mobile flagInput" />
+                                                <!-- </div> -->
+                                                <input type="text" style="margin-right: 323px;" id="mobileNo"
+                                                    name="mobileNo" class="form-control flagPhone"
+                                                    placeholder="Enter Phone Number" minlength="3" maxlength="100"
+                                                    required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <h4>Select Category Type</h4>
+                                                    <select class="form-control" name="catId" id="catId" required>
+                                                        <option disabled value="" hidden selected>Select Category
+                                                        </option>
+                                                        <input type="text" class="categoryId" style="display: none;"
+                                                            name="catId1" id="catId1">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <h4>Select Explore Type</h4>
+                                                    <select class="form-control" name="exploreId" id="exploreId"
+                                                        required>
+                                                        <option disabled value="" hidden selected>Select Explore
+                                                        </option>
+                                                        <input type="text" class="categoryId" style="display: none;"
+                                                            name="exploreId1" id="exploreId1">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div> -->
+
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="form-group">
+                                            <h4>Minimum Order Amount<span style="color: red;">*</span></h4>
+                                            <input type="text" oninput="validateNumber(event)" class="form-control"
+                                                id="minimum_orderAmount" name="minimum_orderAmount"
+                                                placeholder=" Enter minimum_orderAmount" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="form-group">
+                                            <h4>Max Delivery Time<span style="color: red;">*</span></h4>
+                                            <input type="time" class="form-control" id="max_deliveryTime"
+                                                name="max_deliveryTime" placeholder="Enter Delivery Time" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="form-group">
+                                            <h4>Opening Time<span style="color: red;">*</span></h4>
+                                            <select type="text" class="form-control time_drp" id="openingTime"
+                                                name="openingTime" required>
+                                                <input type="text" class="openTime1" style="display: none;"
+                                                    name="openingTime1" id="openingTime1">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="form-group">
+                                            <h4>Closing Time<span style="color: red;">*</span></h4>
+                                            <select class="form-control time_drp" id="closingTime" name="closingTime"
+                                                required>
+                                                <input type="text" class="closeTime1" style="display: none;"
+                                                    name="closingTime1" id="closingTime1">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- map -->
+                                <div class="row mt-3">
+                                    <div class="col-lg-12 col-md-12 col-12 position-relative">
+                                        <div id="map" style="height: 500px;"></div>
+                                        <!-- prettier-ignore -->
+                                        <input type="text" id="fullAddress1" placeholder="Enter Branch Address"
+                                            class="position-absolute top-0 right-5 form-control"
+                                            style="top:5px;right: 70px;width:40%;">
+
+                                        <script>(g => { var h, a, k, p = "AIzaSyDIKiU6onrRi-GyEf6tdqGoEKmyYtFzFJs                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
+                                                ({ key: "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg", v: "beta" });</script>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="form-group">
+                                            <h4>Address<span style="color: red;">*</span></h4>
+                                            <input type="text" oninput="validate(this)" class="form-control"
+                                                id="fullAddress" name="fullAddress" placeholder=" Enter address"
+                                                readonly>
+                                            <input type="text" class="form-control" id="googlePlaceId"
+                                                name="googlePlaceId" style="display: none;">
+
+                                            <input type="text" class="form-control" id="country" name="country"
+                                                style="display: none;">
+                                            <input type="text" class="form-control" id="city" name="city"
+                                                style="display: none;">
+                                            <input type="text" class="form-control" id="state" name="state"
+                                                style="display: none;">
+                                            <!-- <input type="text" class="form-control" id="addressLine1"
+                                                        name="addressLine1" style="display: none;"> -->
+                                            <input type="text" class="form-control" id="zipCode" name="zipCode"
+                                                style="display: none;">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="form-group">
+                                            <h4>Delivery charges<span style="color: red;">*</span></h4>
+                                            <input type="text" oninput="validateNumber(event)" class="form-control"
+                                                id="delivery_charges" name="delivery_charges"
+                                                placeholder="Enter delivery_charges" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="form-group">
+                                            <h4>Latitude<span style="color: red;">*</span></h4>
+                                            <input type="text" oninput="validate(this)" class="form-control" id="lat"
+                                                name="lat" placeholder=" Enter Latitude" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="form-group">
+                                            <h4>Longitude<span style="color: red;">*</span></h4>
+                                            <input type="text" oninput="validate(this)" class="form-control" id="long"
+                                                name="long" placeholder=" Enter Longitude" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <h4>Upload Branch Image<span style="color: red;">*</span></h4>
+                                        <div class="col-lg-4 col-md-5 col-12 form-group" style="text-align: left;">
+                                            <label id="branchImage" style="cursor: pointer;"> <img id="blah1"
+                                                    src="../../admin/assets/img/emptyphoto.png" alt=""
+                                                    style="width:200px; height:200px;border-radius: 23px;"><br>
+                                                <input type="file" name="branchImage" id="imageInput" accept="image/*"
+                                                    onchange="readURL1(this)" />
+                                                <h3>Image size: 300×300</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span>
+                                    <h3 style="font-weight:bold;">Select Payment Method<span
+                                            style="color: red;">*</span></h3>
+                                </span>
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4 col-12">
+                                        <div class="form-group d-flex align-items-center">
+                                            <label for="c1">
+                                                <input type="checkbox" id="c1" class="circleCheckbox" name="c1"
+                                                    value="Cash On Delivery">
+                                                <span class="checkHeading" style="cursor: pointer;margin-left: 8px;">
+                                                    <strong>Cash On Delivery</strong>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-12">
+                                        <div class="form-group">
+                                            <label for="c2">
+                                                <input type="checkbox" id="c2" class="circleCheckbox" name="c2"
+                                                    value="Accept Card">
+                                                <span class="checkHeading" style="cursor: pointer;margin-left: 8px;">
+                                                    <strong>Accept Card</strong>
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group" style="display: none;">
+                                            <input id="vendorId1" value="Accept card">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="button" class="btn btn-primary block half-width m-b">Submit</button>
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="../../admin/assets/js/jquery-3.1.1.min.js"></script>
+    <script src="../../admin/assets/js/popper.min.js"></script>
+    <script src="../../admin/assets/js/bootstrap.js"></script>
+    <script src="../../admin/assets/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../../admin/assets/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Peity -->
+    <script src="../../admin/assets/js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="../../admin/assets/js/inspinia.js"></script>
+    <script src="../../admin/assets/js/plugins/pace/pace.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="../../admin/assets/js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Peity -->
+    <script src="../../admin/assets/js/demo/peity-demo.js"></script>
+    <script type="text/javascript" src="../../admin/assets/paginate/pagination.min.js"></script>
+    <script src="assets/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.2/js/intlTelInput.js'></script>
+    <script src="https://unpkg.com/libphonenumber-js/bundle/libphonenumber-js.min.js"></script>
+
+    <script>
+        var token = localStorage.getItem("token");
+        var host = window.location.protocol + "//" + window.location.host;
+        if (!token) {
+            localStorage.removeItem("name");
+            localStorage.removeItem("token");
+            window.location.replace('/login');
+        }
+        var currentLocation = window.location.href;
+        var url = new URL(currentLocation);
+        var branchId = url.searchParams.get("id");
+
+        function mobileNoselect() {
+            if ($('#form').length) {
+                $(".mobile").intlTelInput();
+                $(".mobile").intlTelInput("setNumber", "+91");
+            };
+        };
+        //<span style="color: red;">*</span> Select js
+        function nice_Select() {
+            if ($('.product_select').length) {
+                $('select').niceSelect();
+            };
+        };
+        // Function Calls<span style="color: red;">*</span> 
+        // verificationForm ();
+        mobileNoselect();
+        nice_Select();
+        $("#form").submit(function (e) {
+            e.preventDefault();
+            var number_withcounrtCode = document.getElementById('mobile_countryCode').value + "" + document.getElementById('mobileNo').value
+            if (libphonenumber.parsePhoneNumber(number_withcounrtCode).isValid() == true) {
+                var openTime = document.getElementById('openingTime').value
+                var closeTime = document.getElementById('closingTime').value
+
+                if (!openTime && !closeTime) {
+                    alert("Please enter Time");
+                } else {
+                    const split = openTime.split(':')
+                    const split1 = closeTime.split(':')
+                    if (split[0] == 0 && split[1] == 0 && split1[0] == 0 && split1[1] == 0) {
+                        alert("Please enter Time");
+                    } else if (openTime > closeTime) {
+                        alert(" Close Time should be after Open Time");
+                    } else {
+                        if (document.getElementById("c1").checked && document.getElementById("c2").checked) {
+                            var c1 = document.getElementById("c1").value
+                            var c2 = document.getElementById("c2").value
+                            var array1 = [c1, c2]
+                        } else if (document.getElementById("c2").checked) {
+                            var c2 = document.getElementById("c2").value
+                            var array1 = [c2]
+                        } else if (document.getElementById("c1").checked) {
+                            var c1 = document.getElementById("c1").value
+                            var array1 = [c1]
+                        } else {
+                            var array1 = []
+                        }
+
+                        if (array1.length == 0) {
+                            alert('Please select payment method')
+                        } else {
+                            const button = document.getElementById('button')
+                            button.innerHTML = 'Submitting---'
+                            button.disabled = true
+                            var formData = new FormData(this);
+                            formData.append("paymentMehod", array1)
+                            formData.append("branchType", 'Sub')
+                            formData.append('vendorId', branchId)
+                            $.ajax({
+                                url: host + '/api/v1/admin/restaurant/edit_branch',
+                                type: 'Put',
+                                data: formData,
+                                beforeSend: function (xhr) {
+                                    xhr.setRequestHeader('Authorization', token);
+                                    // xhr.setRequestHeader('timezone', localStorage.getItem('timeZone'));
+                                },
+                                contentType: false,
+                                processData: false,
+                            }).done(function (data) {
+                                // If successful
+                                button.innerHTML = 'Submit'
+                                button.disabled = false
+                                window.location.href = '/admin/branchList?id=' + document.getElementById('vendorId1').value;
+                            }).fail(function (jqXHR, textStatus, errorThrown) {
+                                // If fail
+                                button.innerHTML = 'Submit'
+                                button.disabled = false
+                                alert(jqXHR.responseJSON.error)
+                            })
+                        }
+                    }
+                }
+            } else {
+                alert('Invalid Phone Number Please enter valid Phone Number')
+            }
+        });
+
+        function readURL1(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#blah1')
+                        .attr('src', e.target.result)
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function classActive() {
+            this.setTimeout(() => {
+                document.getElementById('restaurant-nav')?.classList.add("active");
+            }, 1500)
+        }
+
+        function validateNumber(event) {
+            const input = event.target;
+            let value = input.value;
+            value = value.replace(/[^0-9.]/g, '');
+            const parts = value.split('.');
+            if (parts.length > 2) {
+                parts.pop(); // Remove the last element (extra decimal parts)
+                value = parts.join('.');
+            }
+            input.value = value;
+        }
+    </script>
+</body>
+
+</html>
