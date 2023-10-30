@@ -2,11 +2,11 @@ const jwt = require('jsonwebtoken');
 import StatusCodes from 'http-status-codes';
 import { NextFunction, Request, Response } from 'express';
 import { userModel, userSessionModel } from '@models/index'
- import { errors } from '@constants'
+import { errors } from '@constants'
 
 const verifyAuthToken = async (req: any, res: Response, next: NextFunction) => {
     const token = req.headers.authorization
-    if(!token) {
+    if (!token) {
         return res.status(StatusCodes.UNAUTHORIZED).json({
             error: errors.en.noToken,
             message: errors.en.noToken,
@@ -15,7 +15,7 @@ const verifyAuthToken = async (req: any, res: Response, next: NextFunction) => {
     }
     try {
         const verified = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
-        if(verified.role == 'Admin') {
+        if (verified.role == 'Admin') {
             req.user = verified;
             next()
             return
@@ -23,17 +23,17 @@ const verifyAuthToken = async (req: any, res: Response, next: NextFunction) => {
         //Note: Commented signle device login will uncomment before go live
         // const session:any = await userSessionModel.findOne({ jwtToken: token })
         // if(session.status) {
-            const user = await userModel.findOne({ _id: verified.id }, { isActive: 1 })
-            if(user?.isActive) {
-                req.user = verified;
-                next()
-            } else {
-                return res.status(StatusCodes.UNAUTHORIZED).json({
-                    error: errors.en.accountBlocked,
-                    message: errors.en.accountBlocked,
-                    code: StatusCodes.UNAUTHORIZED
-                })
-            }
+        const user = await userModel.findOne({ _id: verified.id }, { isActive: 1 })
+        if (user?.isActive) {
+            req.user = verified;
+            next()
+        } else {
+            return res.status(StatusCodes.UNAUTHORIZED).json({
+                error: errors.en.accountBlocked,
+                message: errors.en.accountBlocked,
+                code: StatusCodes.UNAUTHORIZED
+            })
+        }
         // } else {
         //     return res.status(StatusCodes.UNAUTHORIZED).json({
         //         error: errors.en.sessionExpired,
@@ -41,8 +41,8 @@ const verifyAuthToken = async (req: any, res: Response, next: NextFunction) => {
         //         code: StatusCodes.UNAUTHORIZED
         //     })
         // }
-    } catch(err) {
-        if(err.message == "jwt expired") {
+    } catch (err) {
+        if (err.message == "jwt expired") {
             return res.status(StatusCodes.UNAUTHORIZED).json({
                 error: errors.en.sessionExpired,
                 message: errors.en.sessionExpired,
@@ -60,7 +60,7 @@ const verifyAuthToken = async (req: any, res: Response, next: NextFunction) => {
 
 const checkRole = (roles: string[]) => {
     return (req: any, res: Response, next: NextFunction) => {
-        if(roles.includes(req.user.role))
+        if (roles.includes(req.user.role))
             next()
         else {
             return res.status(StatusCodes.UNAUTHORIZED).json({
@@ -70,6 +70,7 @@ const checkRole = (roles: string[]) => {
         }
     }
 }
+
 export {
     verifyAuthToken,
     checkRole

@@ -3,6 +3,8 @@ import { CustomError } from '@utils/errors';
 import StatusCodes from 'http-status-codes';
 const jwt = require('jsonwebtoken');
 import { messages } from "@Custom_message";
+import { subscribeTo_topic } from '@utils/helpers';
+import { topics } from '@constants';
 const _ = require('lodash');
 
 /**
@@ -36,8 +38,15 @@ function signUp(user: any, header: any, deviceip: any): Promise<any> {
                     deviceToken: devicetoken,
                     jwtToken: token,
                     userId: userData.id,
-                    role:role
+                    role: role
                 }
+                if (role == "user") {
+                    var topic: any = [topics.All, topics['All Customers'], topics['All Customers & Business Owners'], topics['All Customers & Delivery Persons']]
+                }
+                if (role == 'vendor') {
+                    var topic: any = [topics.All, topics['All Business Owners'], topics['All Customers & Business Owners'], topics['All Delivery Persons & Business Owners']]
+                }
+                subscribeTo_topic(devicetoken, topic);
                 await userSessionModel.create(sessionObj)
                 resolve({
                     token,
@@ -103,8 +112,14 @@ function login(body: any, header: any, deviceip: any): Promise<any> {
             }
             // Login for single or multiple device and limited device
             // await userSessionModel.updateMany({"userId": userData.id}, { $set: { "isActive" : false } })
+            if (role == "user") {
+                var topic: any = [topics.All, topics['All Customers'], topics['All Customers & Business Owners'], topics['All Customers & Delivery Persons']]
+            }
+            if (role == 'vendor') {
+                var topic: any = [topics.All, topics['All Business Owners'], topics['All Customers & Business Owners'], topics['All Delivery Persons & Business Owners']]
+            }
+            subscribeTo_topic(devicetoken, topic);
             await userSessionModel.create(sessionObj)
-
             resolve({
                 token,
                 name: userData.name,

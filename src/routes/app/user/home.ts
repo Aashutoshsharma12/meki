@@ -17,8 +17,6 @@ export const p = {
     ResturantListForUserHome: '/ResturantListForUserHome',
     ResturantListForUserCategory:'/ResturantListForUserCategory',
     recentSearch:'/recentSearch'
- 
-
 } as const;
 
 /**

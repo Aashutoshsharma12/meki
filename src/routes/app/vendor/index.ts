@@ -10,6 +10,7 @@ import offer from './offers';
 import branch from './branch';
 import delivery from './deliveryPerson';
 import deliveryPerson_order from './deliveryPerson_order';
+import message from './message';
 
 // Export the base-router
 const baseRouter = Router();
@@ -26,6 +27,7 @@ baseRouter.use('/offer',offer);
 baseRouter.use('/branch',branch);
 baseRouter.use('/delivery',delivery);
 baseRouter.use('/dpOrder',deliveryPerson_order);
+baseRouter.use('/message',message);
 
 // Export default.
 export default baseRouter;

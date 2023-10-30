@@ -35,7 +35,7 @@
     <script src="https://momentjs.com/downloads/moment.js"></script>
     <!-- js files -->
     <script src="../../admin/scripts/auth/logout.js"></script>
-    <script src="../../admin/scripts/listing/cancelReason.js"></script>
+    <script src="../../admin/scripts/listing/notification.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-messaging.js"></script>
@@ -96,7 +96,7 @@
 
 </head>
 
-<body onload="cancelReasonList()">
+<body onload="notificationList()">
     <div id="wrapper" style="display: none;">
         <navbar></navbar>
         <div id="page-wrapper" class="gray-bg">
@@ -121,9 +121,17 @@
                 <div class="d-flex justify-content-between align-items-center pageheading bg-light p-3">
                     <h2><strong>Notications List</strong></h2>
                     <div class="d-flex align-items-center">
-                        <input type="text" style="width: 72%;margin-right: 4px;height: 38px;" placeholder="Search"
+                        <select onchange="notificationList();" class="btn btn-white btn-lg" style="margin-right: 20px;"
+                            placeholder="Status" id="status">
+                            <option disabled value="" hidden selected>Filter</option>
+                            <option value=""><strong>All</strong></option>
+                            <option value="All Customers"><strong>All Customers</strong></option>
+                            <option value="All BusinessOwners"><strong>All Business Owners</strong></option>
+                            <option value="All DeliveryPerson"><strong>All Delivery Persons</strong></option>
+                        </select>
+                        <!-- <input type="text" style="width: 72%;margin-right: 4px;height: 38px;" placeholder="Search"
                             id="search" class="form-control" />
-                        <button class="btn btn-primary btn-lg" id="btnId" onclick="cancelReasonList()">Submit</button>
+                        <button class="btn btn-primary btn-lg" id="btnId" onclick="notificationList()">Submit</button> -->
                     </div>
                 </div>
 
@@ -140,8 +148,10 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th><strong>S.NO</strong></th>
-                                        <th><strong>Cancel Reason</strong></th>
+                                        <th style="width: 20px;"><strong>S.NO</strong></th>
+                                        <th style="width: 26%;"><strong>Title</strong></th>
+                                        <th style="width: 45%;"><strong>Description</strong></th>
+                                        <th style="width: 13%;"><strong>Send To</strong></th>
                                         <th style="text-align: center;"><strong>Actions</strong></th>
                                     </tr>
                                 </thead>

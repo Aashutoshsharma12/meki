@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose"
 
 interface Faq {
+    faq_cat:any;
     question: string;
     messo_question: string;
     lower_question: string;
@@ -13,6 +14,7 @@ interface Faq {
 };
 
 const schema = new Schema<Faq>({
+    faq_cat:{ type: Schema.Types.ObjectId, ref:'faq_cats'},
     question: { type: String },
     messo_question: { type: String },
     lower_question: { type: String },

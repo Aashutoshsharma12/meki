@@ -23,7 +23,7 @@ export const p = {
 /**
  * User SignUp
  */
-router.post(p.signUp, schemaValidator(signUpSchema), async (req: Request, res: Response) => {
+router.post(p.signUp, async (req: Request, res: Response) => {
     const data = await commonAuthController.signUp(req.body , req.headers ,req.ip);
     return res.status(CREATED).send({ data, code: CREATED});
 });
@@ -31,7 +31,7 @@ router.post(p.signUp, schemaValidator(signUpSchema), async (req: Request, res: R
 /**
  * Mark account Verified
  */
-router.post(p.check, schemaValidator(accountVerificationSchema), async (req: Request, res: Response) => {
+router.post(p.check, async (req: Request, res: Response) => {
     const data = await commonAuthController.checkAccount(req.body , req.headers);
     return res.status(OK).send({ data, code: OK });
 });
@@ -39,7 +39,7 @@ router.post(p.check, schemaValidator(accountVerificationSchema), async (req: Req
 /**
  * User Login
  */
-router.post(p.login, schemaValidator(logInSchema), async (req: Request, res: Response) => {
+router.post(p.login, async (req: Request, res: Response) => {
     const data = await commonAuthController.login(req.body, req.headers, req.ip);
     return res.status(OK).send({ data, code: OK });
 });

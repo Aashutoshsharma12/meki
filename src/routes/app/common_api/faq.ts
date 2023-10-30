@@ -1,10 +1,10 @@
 import { Router } from "express";
 import faqController from '@controllers/common_api/faq';
 import { StatusCodes } from "http-status-codes";
-import { verifyAuthToken } from "@utils/authValidator";
+import { checkRole, verifyAuthToken } from "@utils/authValidator";
 import { schemaValidator, schemaValidator1 } from "@utils/schemaValidator";
 import { success } from "@constants";
-import { addFaq, editFaq, getDetails } from "@validators/faq";
+import { addFaq, addFaqCat, editFaq, editFaqCat, getDetails, getFaqCat } from "@validators/faq";
 const router = Router();
 const { CREATED, OK } = StatusCodes;
 
@@ -13,32 +13,69 @@ export const p = {
     edit: '/edit',
     get: '/get',
     list: '/list',
-    delete: '/delete'
+    delete: '/delete',
+    addFaqCat:'/addFaqCat',
+    editFaqCat:'/editFaqCat',
+    getFaqCat:'/getFaqCat',
+    faqCatList:'/faqCatList',
+    deleteFaqCat:'/deleteFaqCat',
+    all_faqCat:'/all_faqCat'
 } as const;
 
-router.post('/add', verifyAuthToken, schemaValidator(addFaq), async (req, res) => {
+router.post('/add', verifyAuthToken, checkRole(['Admin']), schemaValidator(addFaq), async (req, res) => {
     const data = await faqController.addFaq(req.body);
     return res.status(CREATED).json({ data, code: CREATED, message: success.en.success })
 });
 
-router.put('/edit', verifyAuthToken, schemaValidator(editFaq), async (req, res) => {
+router.put('/edit', verifyAuthToken, checkRole(['Admin']), schemaValidator(editFaq), async (req, res) => {
     const data = await faqController.editFaq(req.body);
-    return res.status(CREATED).json({ data, code: CREATED, message: success.en.success })
+    return res.status(CREATED).json({ data, code: CREATED, message: success.en.success });
 });
 
-router.get('/get', verifyAuthToken, schemaValidator1(getDetails), async (req, res) => {
+router.get('/get', verifyAuthToken, checkRole(['Admin']), schemaValidator1(getDetails), async (req, res) => {
     const data = await faqController.getDetails(req.query);
     return res.status(OK).json({ data, code: OK, message: success.en.recordFetched })
 });
 
-router.get('/list', verifyAuthToken, async (req, res) => {
+router.get('/list', verifyAuthToken, checkRole(['Admin']), async (req, res) => {
     const data = await faqController.list(req.query);
     return res.status(OK).json({ data, code: OK, message: success.en.recordFetched })
 });
 
-router.delete('/delete', verifyAuthToken, schemaValidator1(getDetails), async (req, res) => {
+router.delete('/delete', verifyAuthToken, checkRole(['Admin']), schemaValidator1(getDetails), async (req, res) => {
     const data = await faqController.deleteFaq(req.query);
     return res.status(OK).json({ data, code: OK, message: success.en.success })
+});
+
+//faq category
+router.post('/addFaqCat', verifyAuthToken, checkRole(['Admin']), schemaValidator(addFaqCat), async (req, res) => {
+    const data = await faqController.addFaqCat(req.body);
+    return res.status(CREATED).json({ data, code: CREATED, message: success.en.success })
+});
+
+router.put('/editFaqCat', verifyAuthToken, checkRole(['Admin']), schemaValidator(editFaqCat), async (req, res) => {
+    const data = await faqController.editFaqCat(req.body);
+    return res.status(CREATED).json({ data, code: CREATED, message: success.en.success });
+});
+
+router.get('/getFaqCat', verifyAuthToken, checkRole(['Admin']), schemaValidator1(getFaqCat), async (req, res) => {
+    const data = await faqController.getFaqCatDetails(req.query);
+    return res.status(OK).json({ data, code: OK, message: success.en.recordFetched })
+});
+
+router.get('/faqCatList', verifyAuthToken, checkRole(['Admin']), async (req, res) => {
+    const data = await faqController.faqCatList(req.query);
+    return res.status(OK).json({ data, code: OK, message: success.en.recordFetched })
+});
+
+router.delete('/deleteFaqCat', verifyAuthToken, checkRole(['Admin']), schemaValidator1(getFaqCat), async (req, res) => {
+    const data = await faqController.deleteFaqCat(req.query);
+    return res.status(OK).json({ data, code: OK, message: success.en.success })
+});
+
+router.get('/all_faqCat', verifyAuthToken, checkRole(['Admin']), async (req, res) => {
+    const data = await faqController.all_faqCat();
+    return res.status(OK).json({ data, code: OK, message: success.en.recordFetched })
 });
 
 

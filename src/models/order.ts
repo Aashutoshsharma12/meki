@@ -31,6 +31,8 @@ interface order {
     deliveryPersonStatus_track:Object;
     order_time:string;
     track_status:Object;
+    tracking_loc:any;
+    delivery_boy_last_loc:any;
     admin_tax:Number;
     petAtHome:Boolean;
     leaveAtDoor:Boolean;
@@ -149,6 +151,8 @@ const schema = new Schema<order>({
             default: ''
         }
     }],
+    tracking_loc:[],
+    delivery_boy_last_loc:{},
     admin_tax:{ type: Number },
     petAtHome:{ type: Boolean, default: false},
     leaveAtDoor:{ type: Boolean, default: false},

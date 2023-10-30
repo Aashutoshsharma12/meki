@@ -23,7 +23,11 @@ const schema = new Schema<notification>({
     sendDate: { type: String },
     sendTime: { type: String },
     status: { type: Boolean },
-    isDelete: { type: Boolean ,default:false}
-});
+    isDelete: { type: Boolean, default: false }
+},
+    {
+        timestamps: true,
+        versionKey: false
+    });
 const notificationModel = model<notification>('notification', schema);
 export = notificationModel;

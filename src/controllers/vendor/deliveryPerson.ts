@@ -2,12 +2,13 @@ import { userModel, userSessionModel, deliveryPersonModel } from '@models/index'
 import { CustomError } from '@utils/errors';
 import StatusCodes from 'http-status-codes';
 import { messages } from "@Custom_message";
-import { identityGenerator } from '@utils/helpers';
-import mongoose  from 'mongoose';
+import { identityGenerator, subscribeTo_topic } from '@utils/helpers';
+import mongoose from 'mongoose';
 const jwt = require('jsonwebtoken');
 import moment, { lang } from 'moment-timezone';
 import { resolve } from 'path';
 import { reject } from 'promise';
+import { topics } from '@constants';
 const ObjectId = mongoose.Types.ObjectId;
 const _ = require('lodash');
 /**
@@ -17,9 +18,9 @@ const _ = require('lodash');
  * @returns 
  */
 // login delivery boy
-function deliveryBoyLogin(body: any, headers: any, deviceip: any): Promise<any>{
-    return new Promise( async(resolve, reject)=>{
-        try{
+function deliveryBoyLogin(body: any, headers: any, deviceip: any): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+        try {
             const { phoneNumber, countryCode, role = "user" } = body;
             const { devicetoken, devicetype, timezone, language, currentversion } = headers;
             var message: any = messages(language);
@@ -41,7 +42,7 @@ function deliveryBoyLogin(body: any, headers: any, deviceip: any): Promise<any>{
 
             const token: string = jwt.sign({
                 id: userData.id,
-                role:'delivery'
+                role: 'delivery'
             }, process.env.JWT_SECRET_TOKEN, { expiresIn: '30d' })
             const sessionObj = {
                 deviceType: devicetype,
@@ -54,6 +55,10 @@ function deliveryBoyLogin(body: any, headers: any, deviceip: any): Promise<any>{
                 jwtToken: token,
                 userId: userData.id
             }
+            if (role == 'delivery') {
+                var topic: any = [topics.All, topics['All Delivery Persons'], topics['All Customers & Delivery Persons'], topics['All Delivery Persons & Business Owners']]
+            }
+            subscribeTo_topic(devicetoken, topic);
             // Login for single or multiple device and limited device
             // await userSessionModel.updateMany({"userId": userData.id}, { $set: { "isActive" : false } })
             await userSessionModel.create(sessionObj)
@@ -70,9 +75,9 @@ function deliveryBoyLogin(body: any, headers: any, deviceip: any): Promise<any>{
             })
 
 
-        }catch(err){
+        } catch (err) {
             console.log(err);
-            if(err.code == 11000){
+            if (err.code == 11000) {
                 reject(new CustomError(message.noDatafound, StatusCodes.BAD_REQUEST));
             }
         }
@@ -121,32 +126,32 @@ function logOut(headers: any): Promise<any> {
 }
 
 // Edit delivery boy profile
-function EditDeliveryProfile(data: any, userId: any, image: any, headers: any): Promise<any>{
-    return new Promise( async(resolve, reject)=>{
-        try{
+function EditDeliveryProfile(data: any, userId: any, image: any, headers: any): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+        try {
             const { language } = headers;
             var message: any = messages(language);
-            if(!userId){
+            if (!userId) {
                 reject(new CustomError(message.noDatafound, StatusCodes.BAD_REQUEST));
             }
 
-            var dBoy: any = await deliveryPersonModel.findOne({'_id':userId});
-            if(dBoy){
+            var dBoy: any = await deliveryPersonModel.findOne({ '_id': userId });
+            if (dBoy) {
                 var obj: any = {
-                    'name':data.name ? data.name : dBoy.name,
-                    'countryCode':data.countryCode ? data.countryCode : dBoy.countryCode,
-                    'phoneNumber':data.phoneNumber ? data.phoneNumber : dBoy.phoneNumber,
+                    'name': data.name ? data.name : dBoy.name,
+                    'countryCode': data.countryCode ? data.countryCode : dBoy.countryCode,
+                    'phoneNumber': data.phoneNumber ? data.phoneNumber : dBoy.phoneNumber,
                     'image': image[0].path ? image[0].path : dBoy.image
                 }
-                await deliveryPersonModel.updateOne({'_id':userId},obj);
-                var Persondata = await deliveryPersonModel.findOne({'_id':userId});
-                resolve({result:Persondata});
-            }else{
+                await deliveryPersonModel.updateOne({ '_id': userId }, obj);
+                var Persondata = await deliveryPersonModel.findOne({ '_id': userId });
+                resolve({ result: Persondata });
+            } else {
                 reject(new CustomError(message.noDatafound, StatusCodes.BAD_REQUEST));
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
-            if(err.code == 11000){
+            if (err.code == 11000) {
                 reject(new CustomError(message.noDatafound, StatusCodes.BAD_REQUEST));
             }
             reject(err);
@@ -155,28 +160,28 @@ function EditDeliveryProfile(data: any, userId: any, image: any, headers: any): 
 }
 
 // Update online status
-function UpdateStatusByDeliveryPerson(data: any, userId: any, headers: any): Promise<any>{
-    return new Promise( async(resolve, reject)=>{
-        try{
+function UpdateStatusByDeliveryPerson(data: any, userId: any, headers: any): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+        try {
             const { language } = headers;
             var message: any = messages(language);
-            if(!userId){
+            if (!userId) {
                 reject(new CustomError(message.noDatafound, StatusCodes.BAD_REQUEST));
             }
 
-            var dPerson: any = await deliveryPersonModel.findOne({'_id':userId});
-            if(dPerson){
+            var dPerson: any = await deliveryPersonModel.findOne({ '_id': userId });
+            if (dPerson) {
                 var obj: any = {
-                    'status':data.status
+                    'status': data.status
                 }
-                await deliveryPersonModel.updateOne({'_id':userId},obj);
-                resolve({'result':{}});
-            }else{
+                await deliveryPersonModel.updateOne({ '_id': userId }, obj);
+                resolve({ 'result': {} });
+            } else {
                 reject(new CustomError(message.noDatafound, StatusCodes.BAD_REQUEST));
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
-            if(err.code == 11000){
+            if (err.code == 11000) {
                 reject(new CustomError(message.noDatafound, StatusCodes.BAD_REQUEST));
             }
             reject(err);
@@ -185,28 +190,28 @@ function UpdateStatusByDeliveryPerson(data: any, userId: any, headers: any): Pro
 }
 
 // Update notification status
-function UpdateNotificationStatusByDeliveryBoy(data: any, userId: any, headers: any): Promise<any>{
-    return new Promise( async(resolve, reject) =>{
-        try{
+function UpdateNotificationStatusByDeliveryBoy(data: any, userId: any, headers: any): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+        try {
             const { language } = headers;
             var message: any = messages(language);
-            if(!userId){
+            if (!userId) {
                 reject(new CustomError(message.noDatafound, StatusCodes.BAD_REQUEST));
             }
 
-            var dPerson: any = await deliveryPersonModel.findOne({'_id':userId});
-            if(dPerson){
+            var dPerson: any = await deliveryPersonModel.findOne({ '_id': userId });
+            if (dPerson) {
                 var obj: any = {
-                    'notificationStatus':data.notificationStatus
+                    'notificationStatus': data.notificationStatus
                 }
-                await deliveryPersonModel.updateOne({'_id':userId},obj);
-                resolve({'result':{}});
-            }else{
+                await deliveryPersonModel.updateOne({ '_id': userId }, obj);
+                resolve({ 'result': {} });
+            } else {
                 reject(new CustomError(message.noDatafound, StatusCodes.BAD_REQUEST));
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
-            if(err.code == 11000){
+            if (err.code == 11000) {
                 reject(new CustomError(message.noDatafound, StatusCodes.BAD_REQUEST));
             }
             reject(err);
@@ -215,29 +220,29 @@ function UpdateNotificationStatusByDeliveryBoy(data: any, userId: any, headers: 
 }
 
 // Update language by delivery boy
-function UpdateLanguageByDeliveryBoy(data: any, userId: any, headers: any): Promise<any>{
-    return new Promise( async(resolve, reject)=>{
-        try{
+function UpdateLanguageByDeliveryBoy(data: any, userId: any, headers: any): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+        try {
             const { language } = headers;
             var message: any = messages(language);
-            if(!userId){
+            if (!userId) {
                 reject(new CustomError(message.noDatafound, StatusCodes.BAD_REQUEST));
             }
 
-            var dPerson: any = await deliveryPersonModel.findOne({'_id':userId});
-            if(dPerson){
+            var dPerson: any = await deliveryPersonModel.findOne({ '_id': userId });
+            if (dPerson) {
                 var obj: any = {
-                    'language':data.language
+                    'language': data.language
                 }
 
-                await deliveryPersonModel.updateOne({'_id':userId},obj);
-                resolve({'result':{}});
-            }else{
+                await deliveryPersonModel.updateOne({ '_id': userId }, obj);
+                resolve({ 'result': {} });
+            } else {
                 reject(new CustomError(message.noDatafound, StatusCodes.BAD_REQUEST));
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
-            if(err.code == 11000){
+            if (err.code == 11000) {
                 reject(new CustomError(message.noDatafound, StatusCodes.BAD_REQUEST));
             }
         }
@@ -245,29 +250,29 @@ function UpdateLanguageByDeliveryBoy(data: any, userId: any, headers: any): Prom
 }
 
 // Update location by delivery body
-function UpdateLocationByDeliveryBoy(data: any, userId: any, headers: any): Promise<any>{
-    return new Promise( async(resolve, reject)=>{
-        try{
+function UpdateLocationByDeliveryBoy(data: any, userId: any, headers: any): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+        try {
             const { language } = headers;
             var message: any = messages(language);
-            if(!userId || !data.lat || !data.long){
+            if (!userId || !data.lat || !data.long) {
                 reject(new CustomError(message.noDatafound, StatusCodes.BAD_REQUEST));
             }
 
-            var dPerson: any = await deliveryPersonModel.find({'_id':userId});
-            if(dPerson){
+            var dPerson: any = await deliveryPersonModel.find({ '_id': userId });
+            if (dPerson) {
                 var obj: any = {
-                    'lat':data.lat ? data.lat : dPerson.lat,
-                    'long':data.long ? data.long : dPerson.long
+                    'lat': data.lat ? data.lat : dPerson.lat,
+                    'long': data.long ? data.long : dPerson.long
                 }
-                await deliveryPersonModel.updateOne({'_id':userId},obj);
-                resolve({'result':{}});
-            }else{
+                await deliveryPersonModel.updateOne({ '_id': userId }, obj);
+                resolve({ 'result': {} });
+            } else {
                 reject(new CustomError(message.noDatafound, StatusCodes.BAD_REQUEST));
             }
-        }catch(err){
+        } catch (err) {
             console.log(err);
-            if(err.code == 11000){
+            if (err.code == 11000) {
                 reject(new CustomError(message.noDatafound, StatusCodes.BAD_REQUEST));
             }
             reject(err);

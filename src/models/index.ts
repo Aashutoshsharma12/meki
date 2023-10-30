@@ -20,6 +20,12 @@ import deliveryPersonModel from './deliveryPerson';
 import dpExpMessageModel from './dp_experience';
 import {faqModel} from './faq';
 import cancelReasonModel from './cancelReason';
+import roomModel from './room';
+import messageModel from './message';
+import {faq_catModel} from './faq_cat';
+import {report_issueModel} from './report_issue';
+import {report_issue_messageModel} from './report_issue_message';
+import { feedbackModel } from './feedback';
 export {
     userModel,
     adminModel,
@@ -42,5 +48,11 @@ export {
     deliveryPersonModel,
     dpExpMessageModel,
     faqModel,
-    cancelReasonModel
+    cancelReasonModel,
+    roomModel,
+    messageModel,
+    faq_catModel,
+    report_issueModel,
+    report_issue_messageModel,
+    feedbackModel
 }

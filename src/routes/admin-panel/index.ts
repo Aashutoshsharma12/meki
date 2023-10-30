@@ -170,6 +170,21 @@ baseRouter.get('/sendNotification', (_: Request, res: Response) => {
     res.sendFile('add/sendNotification.html', {root: viewsDir});
 });
 
+//***********Support list*************//
+baseRouter.get('/support', (_: Request, res: Response) => {
+    res.sendFile('listing/support.html', {root: viewsDir});
+});
+
+//***********Faq Category list*************//
+baseRouter.get('/faqCategory', (_: Request, res: Response) => {
+    res.sendFile('listing/faqCategory.html', {root: viewsDir});
+});
+//***********Chat page*************//
+baseRouter.get('/chating', (_: Request, res: Response) => {
+    res.sendFile('listing/chat.html', {root: viewsDir});
+});
+
+
 
 
 export default baseRouter;

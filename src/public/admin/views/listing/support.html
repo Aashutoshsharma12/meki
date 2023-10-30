@@ -35,7 +35,7 @@
     <script src="https://momentjs.com/downloads/moment.js"></script>
     <!-- js files -->
     <script src="../../admin/scripts/auth/logout.js"></script>
-    <script src="../../admin/scripts/listing/deliveryPerson.js"></script>
+    <script src="../../admin/scripts/listing/support.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-messaging.js"></script>
@@ -43,10 +43,6 @@
     <style type="text/css">
         .container {
             margin: 100px auto;
-        }
-
-        #search::placeholder{
-            font-size: 12px;
         }
 
         .edit_cat_file {
@@ -78,9 +74,10 @@
 
 </head>
 
-<body onload="deliveryPersonList()">
+<body onload="supportList()">
     <div id="wrapper" style="display: none;">
         <navbar></navbar>
+
         <div id="page-wrapper" class="gray-bg">
             <div class="border-bottom">
                 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -98,42 +95,60 @@
                                     src="../../../admin/assets/img/logout .png"></a></li>
                     </ul>
                 </nav>
+                <!-- </div> -->
             </div>
+            <!-- </div> -->
             <div class="wrapper border-bottom page-heading ">
                 <div class="d-flex justify-content-between align-items-center pageheading bg-light p-3">
-                    <h1><strong>All Delivery Person </strong></h1>
+                    <h2><strong>Support List</strong></h2>
                     <div class="d-flex align-items-center">
-                        <select onchange="deliveryPersonList();" class="btn btn-white btn-lg" style="margin-right: 20px;" placeholder="Status"
-                            id="status">
+                        <select onchange="supportList();" class="btn btn-white btn-lg" style="margin-right: 20px;"
+                            placeholder="Status" id="status">
                             <option disabled value="" hidden selected>Status</option>
-                            <option value=true>Online</option>
-                            <option value=false >Offline</option>
+                            <option value='Open'>Open</option>
+                            <option value='Closed'>Closed</option>
                         </select>
-                        <input type="text" oninput="validate(this)" style="width: 60%;margin-right: 4px;"
-                            placeholder="Search by name or mobile No." id="search" class="form-control" />
-                        <button class="btn btn-info btn-lg" id="btnId" onclick="deliveryPersonList()">Search</button>
+                        <input type="text" oninput="validate(this)" style="width: 78%;margin-right: 7px;" placeholder="Search" id="search"
+                            class="form-control" />
+                        <button class="btn btn-primary btn-lg" style="margin-right: 34px;" id="btnId"
+                            onclick="supportList()">Search</button>
+                        
                     </div>
                 </div>
 
                 <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="ibox-title d-flex align-items-center justify-content-between">
+                        <h4><strong>Support</strong></h4>
+
+                        <!-- <div class="userSearch_data">
+                            <button type="button" style="background-color:#1AB394;"
+                                class="btn btn-primary btn-success"><i aria-hidden="true"></i><span data-toggle="modal"
+                                    data-target="#myModal5">Add
+                                </span>
+                            </button>
+                        </div> -->
+                    </div>
                     <div class="ibox-content">
                         <div class="sk-spinner sk-spinner-double-bounce">
                             <div class="sk-double-bounce1"></div>
                             <div class="sk-double-boun  ce2"></div>
                         </div>
                         <div class="table-responsive storeTypetable border-none">
-                            <table class="table table-hover">
+                            <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th><strong>#id</strong></th>
-                                        <th><strong>Image</strong></th>
-                                        <th><strong>Name</strong></th>
-                                        <th><strong>Contact</strong></th>
+                                        <th style="width: 20px;"><strong>S.NO</strong></th>
+                                        <th style="width: 25%;"><strong>Message</strong></th>
+                                        <th style="width: 13%;"><strong>Name</strong></th>
+                                        <th style="width: 20%;"><strong>Email</strong></th>
+                                        <th style="width: 13%;"><strong>Contact</strong></th>
                                         <th><strong>Status</strong></th>
                                         <th><strong>Actions</strong></th>
                                     </tr>
                                 </thead>
+                                <!-- <div style="max-height: 600px; overflow: auto;"> -->
                                 <tbody id="table"> </tbody>
+                                <!-- </div> -->
                             </table>
                             <div id="loader" class="loader" style="display: block;"></div>
                         </div>
@@ -141,17 +156,14 @@
                             No data found
                         </div>
                     </div>
-                    <!-- </div> -->
                     <div class="box" id="page1">
                         <ul id="example-1" class="pagination"></ul>
                     </div>
                 </div>
                 <footer></footer>
             </div>
-            </form>
         </div>
     </div>
-
     <!-- Mainly scripts -->
     <script src="../../admin/assets/js/jquery-3.1.1.min.js"></script>
     <script src="../../admin/assets/js/popper.min.js"></script>
@@ -182,8 +194,6 @@
             localStorage.removeItem("token");
             window.location.replace('/admin/login');
         }
-        
-
         document.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
                 if (document.getElementById('search').value) {
@@ -191,8 +201,6 @@
                 }
             }
         });
-    
-    
     </script>
 </body>
 

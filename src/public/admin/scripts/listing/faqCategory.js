@@ -1,13 +1,12 @@
 //*********Listing Table Data**************/
-function faqList() {
+function faqCategoryList() {
     this.setTimeout(() => {
         document.getElementById('faq-nav')?.classList.add("active");
     }, 1500)
     var obj = {
         'page': 1,
         'perPage': 10,
-        search: '',
-        role: ''
+        search: ''
     }
     if (document.getElementById('search').value) {
         obj = {
@@ -15,16 +14,8 @@ function faqList() {
             search: document.getElementById('search').value
         }
     }
-    if (document.getElementById('role1').value) {
-        obj = {
-            ...obj,
-            role: document.getElementById('role1').value
-        }
-    }
-
-    $('#ibox1').children('.ibox-content').toggleClass('sk-loading');
     $.ajax({
-        url: `${host}/api/v1/common/faq/list?page=${obj.page}&perPage=${obj.perPage}&role=${obj.role}&search=${obj.search}`,
+        url: `${host}/api/v1/common/faq/faqCatList?page=${obj.page}&perPage=${obj.perPage}&search=${obj.search}`,
         type: 'GET',
         contentType: 'application/json',
         beforeSend: function (xhr) {
@@ -68,9 +59,8 @@ function faqList() {
                             }
                         }
 
-                        $('#ibox1').children('.ibox-content').toggleClass('sk-loading');
                         $.ajax({
-                            url: `${host}/api/v1/common/faq/list?page=${obj.page}&perPage=${obj.perPage}&role=${obj.role}&search=${obj.search}`,
+                            url: `${host}/api/v1/common/faq/faqCatList?page=${obj.page}&perPage=${obj.perPage}&search=${obj.search}`,
                             type: 'GET',
                             contentType: 'application/json',
                             beforeSend: function (xhr) {
@@ -79,7 +69,6 @@ function faqList() {
                             dataType: 'json',
                             success: function (data, status) {
                                 if (data.code == 200) {
-                                    $('#ibox1').children('.ibox-content').toggleClass('sk-loading');
                                     $("#table").html(' ');
                                     for (var i = 0; i < data.data.list.length; i++) {
                                         var index = i + 1 + (obj.perPage * (obj.page - 1));
@@ -87,9 +76,8 @@ function faqList() {
                                             '<td>' + index +
                                             '<td>' + (data.data.list[i].question) +
                                             '<td>' + (data.data.list[i].answer) +
-                                            '<td>' + (data.data.list[i].faq_cat.name) +
                                             '<td>' + (data.data.list[i].role) +
-                                            '<td style="text-align: center;"><button type="button" class="btn btn-sm btn-white" data-toggle="modal" data-target="#myModal2" onclick= edit(' + '\'' + data.data.list[i]._id + '\'' + ')>' + `<img src =${"../../admin/assets/img/file_icon.png"} style = "height:25px; width:35px;">` + 'Edit' + '</button>' +
+                                            '<td style="text-align: center;vertical-align:middle;"><button type="button" class="btn btn-sm btn-white" data-toggle="modal" data-target="#myModal2" onclick= edit(' + '\'' + data.data.list[i]._id + '\'' + ')>' + `<img src =${"../../admin/assets/img/file_icon.png"} style = "height:25px; width:35px;">` + 'Edit' + '</button>' +
                                             '<button style="margin-left: 5px; type="button" class="btn btn-sm btn-white"  onclick= remove(' + '\'' + data.data.list[i]._id + '\'' + ')>' + `<img src =${"../../admin/assets/img/file_icon.png"} style = "height:25px; width:35px;">` + 'Remove' + '</button>' + '</tr>'
                                     }
                                 }
@@ -103,12 +91,9 @@ function faqList() {
                 for (var i = 0; i < data.data.list.length; i++) {
                     var index = i + 1
                     document.getElementById('table').innerHTML += '<tr>' +
-                        '<td>' + index +
-                        '<td>' + (data.data.list[i].question) +
-                        '<td>' + (data.data.list[i].answer) +
-                        '<td>' + (data.data.list[i].faq_cat.name) +
-                        '<td>' + (data.data.list[i].role) +
-                        '<td style="text-align: center;"><button type="button" class="btn btn-sm btn-white" data-toggle="modal" data-target="#myModal2" onclick= edit(' + '\'' + data.data.list[i]._id + '\'' + ')>' + `<img src =${"../../admin/assets/img/file_icon.png"} style = "height:25px; width:35px;">` + 'Edit' + '</button>' +
+                        '<td style="font-weight:bold;">' + index +
+                        '<td style="font-weight:bold;">' + (data.data.list[i].name) +
+                        '<td><button type="button" class="btn btn-sm btn-white" data-toggle="modal" data-target="#myModal2" onclick= edit(' + '\'' + data.data.list[i]._id + '\'' + ')>' + `<img src =${"../../admin/assets/img/file_icon.png"} style = "height:25px; width:35px;">` + 'Edit' + '</button>' +
                         '<button style="margin-left: 5px; type="button" class="btn btn-sm btn-white"  onclick= remove(' + '\'' + data.data.list[i]._id + '\'' + ')>' + `<img src =${"../../admin/assets/img/file_icon.png"} style = "height:25px; width:35px;">` + 'Remove' + '</button>' + '</tr>'
                 }
             } else {
@@ -125,9 +110,9 @@ function faqList() {
 }
 
 //Remove Faq
-function remove(faqId) {
+function remove(faqCatId) {
     swal({
-        title: "Are you want to remove this faq?",
+        title: "Are you want to remove this faq category?",
         text: "Ready to Action!",
         type: "warning",
         showCancelButton: true,
@@ -146,11 +131,11 @@ function remove(faqId) {
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader('Authorization', token);
                     },
-                    url: `${host}/api/v1/common/faq/delete?faqId=${faqId}`,
+                    url: `${host}/api/v1/common/faq/deleteFaqCat?faqCatId=${faqCatId}`,
                 }).done(function (data) {
                     // If successful
                     swal.close();
-                    faqList();
+                    faqCategoryList();
                     // window.location.reload();
                 }).fail(function (jqXHR, textStatus, errorThrown) {
                     // If fail
@@ -165,24 +150,19 @@ function remove(faqId) {
 
 //************faq Details ************ */
 
-function edit(faqId) {
+function edit(faqCatId) {
     $.ajax({
         type: "get",
         dataType: 'json',
         beforeSend: function (xhr) {
             xhr.setRequestHeader('Authorization', token);
         },
-        url: `${host}/api/v1/common/faq/get?faqId=${faqId}`,
+        url: `${host}/api/v1/common/faq/getFaqCat?faqCatId=${faqCatId}`,
     }).done(function (data) {
         // If successful
-        document.getElementById('question1').value = data.data.question ? data.data.question : "N/A",
-            document.getElementById('messo_question1').value = data.data.messo_question ? data.data.messo_question : "N/A",
-            document.getElementById('answer1').value = data.data.answer ? data.data.answer : data.data.answer;
-        document.getElementById('faqId').value = data.data._id
-        document.getElementById('messo_answer1').value = data.data.messo_answer ? data.data.messo_answer : data.data.messo_answer
-        document.getElementById('role12').value = data.data.role
-        document.getElementById('catId2').value = data.data.faq_cat
-
+        document.getElementById('name').value = data.data.name ? data.data.name : "N/A",
+            document.getElementById('messo_name').value = data.data.messo_name ? data.data.messo_name : "N/A",
+            document.getElementById('faqCatId').value = data.data._id
     }).fail(function (jqXHR, textStatus, errorThrown) {
         // If fail
         alert(jqXHR.responseJSON.error)
@@ -193,62 +173,4 @@ function edit(faqId) {
 //*********Capital title***********/
 function capitalize(input) {
     return input.toLowerCase().split(' ').map(s => s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
-}
-
-//list of faq categories
-function categoryList() {
-    $.ajax({
-        url: host + '/api/v1/common/faq/all_faqCat',
-        type: 'Get',
-        contentType: 'application/json',
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader('Authorization', localStorage.token);
-        },
-        dataType: 'json',
-        success: function (data, status) {
-            if (data.code == 200) {
-                var select = document.getElementById("catId");
-                let catId = document.getElementById("catId1").value
-                for (var i = 0; i < data.data.length; i++) {
-                    var option = document.createElement("option"),
-                        txt = document.createTextNode(data.data[i].name);
-                    option.appendChild(txt);
-                    option.setAttribute("value", data.data[i]._id);
-                    option.selected = data.data[i]._id === catId ? true : false
-                    select.insertBefore(option, select.lastChild);
-                }
-            } else {
-                document.getElementById('table').innerHTML = ''
-            }
-        }
-    });
-}
-
-//list of faq categories for edit time
-function categoryList1() {
-    $.ajax({
-        url: host + '/api/v1/common/faq/all_faqCat',
-        type: 'Get',
-        contentType: 'application/json',
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader('Authorization', localStorage.token);
-        },
-        dataType: 'json',
-        success: function (data, status) {
-            if (data.code == 200) {
-                var select = document.getElementById("catId2");
-                let catId = document.getElementById("catId12").value
-                for (var i = 0; i < data.data.length; i++) {
-                    var option = document.createElement("option"),
-                        txt = document.createTextNode(data.data[i].name);
-                    option.appendChild(txt);
-                    option.setAttribute("value", data.data[i]._id);
-                    option.selected = data.data[i]._id === catId ? true : false
-                    select.insertBefore(option, select.lastChild);
-                }
-            } else {
-                document.getElementById('table').innerHTML = ''
-            }
-        }
-    });
 }

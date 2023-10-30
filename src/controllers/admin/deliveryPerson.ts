@@ -1,6 +1,7 @@
 import { errors } from "@constants"
 import deliveryPersonModel from "@models/deliveryPerson";
 import { CustomError } from "@utils/errors"
+import { subscribeTo_topic } from "@utils/helpers";
 import { StatusCodes } from "http-status-codes"
 
 function addDeliveryPerson(body: any, image: any): Promise<any> {

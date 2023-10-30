@@ -38,7 +38,7 @@
 
     <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-messaging.js"></script>
-    <script src="../../admin/scripts/add/addMenuItem.js"></script>
+    <script src="../../admin/scripts/add/sendNotification.js"></script>
     <style type="text/css">
         .container {
             margin: 100px auto;
@@ -102,16 +102,16 @@
             </div>
             <div class="wrapper border-bottom page-heading ">
                 <div class="d-flex justify-content-between align-items-center pageheading bg-light p-3">
-                    <h1 style="font-weight: bold;"><strong>Notications</strong></h1>
+                    <h1 style="font-weight: bold;"><strong>Notifications</strong></h1>
                 </div>
             </div>
             <div class="wrapper wrapper-content animated fadeInRight" style="width: 1200px;margin-left: 220px;">
                 <div class="ibox-title d-flex align-items-center justify-content-between"
-                    style="background-color:white;">
-                    <h3 style="padding-left: 509px; font-weight: bold;"><strong>Send Notication</strong></h3>
+                    style="background-color:white;margin-bottom: -15px;">
+                    <h3 style="padding-left: 509px; font-weight: bold;"><strong>Send Notification</strong></h3>
                 </div>
-                <form style="border: 2px solid white; padding: 20px;" method="post" id="form_menuItem"
-                    enctype="multipart/form-data" class="maxwidth" role="form">
+                <form style=" background-color: white;" method="post" id="form" enctype="multipart/form-data"
+                    class="shadow-lg py-3 px-2 mt-3" role="form">
                     <div class="row">
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
@@ -132,13 +132,19 @@
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
                                 <h4>Send To<span style="color: red;">*</span></h4>
-                                <select class="form-control" name="catId" id="catId" required>
+                                <select class="form-control" name="sendTo" id="sendTo" required>
                                     <option disabled value="" hidden selected>Select
                                     </option>
-                                    <option value="All Customers">All</option>
+                                    <option value="All">All</option>
                                     <option value="All Customers">All Customers</option>
-                                    <option value="All BusinessOwners">All Business Owners</option>
-                                    <option value="All DeliveryPerson">All Delivery Persons</option>
+                                    <option value="All Business Owners">All Business Owners</option>
+                                    <option value="All Delivery Persons">All Delivery Persons</option>
+                                    <option value="All Delivery Persons & Business Owners">All Delivery Persons & Business
+                                        Owners</option>
+                                    <option value="All Customers & Delivery Persons">All Customers & Delivery Persons
+                                    </option>
+                                    <option value="All Customers & Business Owners">All Customers & Business Owners
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -148,28 +154,26 @@
                             <div class="form-group">
                                 <h4>Description(English) Max Length 150<span style="color: red;">*</span></h4>
                                 <textarea class="form-control" rows="3" oninput="validate(this)" id="description"
-                                    name="description" placeholder="Enter Description" maxlength="200"
+                                    name="description" placeholder="Enter Description in (English)" maxlength="200"
                                     required></textarea>
                             </div>
                         </div>
-
                     </div>
                     <div class="row">
                         <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                             <div class="form-group">
                                 <h4>Description(Mesodonian) Max Length 150<span style="color: red;">*</span></h4>
                                 <textarea oninput="validate(this)" class="form-control" id="meso_description"
-                                    name="meso_description" rows="3" placeholder=" Enter meso_description"
+                                    name="meso_description" rows="3" placeholder=" Enter Description in (Mesodonian)"
                                     maxlength="200" required></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                            <button id="addButton" style="height: 35px;width: 1000px;" type=" button"
-                                class="btn btn-sm btn-danger">Add
-                                Item</button>
-                        </div>
+                    <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-white block half-width m-b addVendor_cancel"
+                            data-dismiss="modal" onclick="cancel()">Cancel</button> -->
+                        <a href="/Submit"><button id="button"
+                                class="btn btn-primary block half-width m-b">Send</button></a>
                     </div>
                 </form>
             </div>
@@ -208,14 +212,6 @@
             localStorage.removeItem("token");
             window.location.replace('/admin/login');
         }
-        document.getElementById("restaurantName").textContent = localStorage.getItem("restaurantName");
-        // var currentLocation = window.location.href;
-        // var url = new URL(currentLocation);
-        // var Id = url.searchParams.get("id");
-        // const split = Id.split(',')
-        // const vendorId = split[0]
-        // const catName1 = split[1]
-        // document.getElementById('catId').value = catName1
 
     </script>
 </body>

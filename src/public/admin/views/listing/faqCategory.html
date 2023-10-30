@@ -35,7 +35,7 @@
     <script src="https://momentjs.com/downloads/moment.js"></script>
     <!-- js files -->
     <script src="../../admin/scripts/auth/logout.js"></script>
-    <script src="../../admin/scripts/listing/faq.js"></script>
+    <script src="../../admin/scripts/listing/faqCategory.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-messaging.js"></script>
@@ -75,10 +75,9 @@
 
 </head>
 
-<body onload="faqList();categoryList();categoryList1();">
+<body onload="faqCategoryList()">
     <div id="wrapper" style="display: none;">
         <navbar></navbar>
-
         <div id="page-wrapper" class="gray-bg">
             <div class="border-bottom">
                 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -99,23 +98,14 @@
             </div>
             <div class="wrapper border-bottom page-heading ">
                 <div class="d-flex justify-content-between align-items-center pageheading bg-light p-3">
-                    <h2><strong>Faq List</strong></h2>
+                    <h2><strong>Faq Category List</strong></h2>
                     <div class="d-flex align-items-center">
-                        <select onchange="faqList();" class="btn btn-white btn-lg" style="margin-right: 20px;"
-                            placeholder="Role" id="role1">
-                            <option disabled value="" hidden selected>Role</option>
-                            <option value='businessOwner'>Business Owner</option>
-                            <option value='customer'>Customer</option>
-                            <option value="deliveryPerson">Delivery Person</option>
-                        </select>
                         <input type="text" oninput="validate(this)" style="width: 78%;margin-right: 7px;"
                             placeholder="Search" id="search" class="form-control" />
                         <button class="btn btn-info btn-lg" style="margin-right: 34px;" id="btnId1"
-                            onclick="faqList()">Search</button>
-                        <a href="/admin/faqCategory" class="btn btn-info btn-lg"
-                            style="width: 50%;margin-right: 17px;color: white;">Faq Category</a>
-                        <button class="btn btn-info btn-lg" style="width: 50%;" id="btnId">
-                            <i aria-hidden="true"></i><span data-toggle="modal" data-target="#myModal5">Add Faq
+                            onclick="faqCategoryList()">Search</button>
+                        <button class="btn btn-info btn-lg" style="width: 53%;" id="btnId">
+                            <i aria-hidden="true"></i><span data-toggle="modal" data-target="#myModal5">Add Faq Category
                             </span>
                         </button>
                     </div>
@@ -123,15 +113,7 @@
 
                 <div class="wrapper wrapper-content animated fadeInRight">
                     <div class="ibox-title d-flex align-items-center justify-content-between">
-                        <h4><strong>All Faq</strong></h4>
-
-                        <!-- <div class="userSearch_data">
-                            <button type="button" style="background-color:#1AB394;"
-                                class="btn btn-primary btn-success"><i aria-hidden="true"></i><span data-toggle="modal"
-                                    data-target="#myModal5">Add
-                                </span>
-                            </button>
-                        </div> -->
+                        <h4><strong>All Faq Category</strong></h4>
                     </div>
                     <div class="ibox-content">
                         <div class="sk-spinner sk-spinner-double-bounce">
@@ -139,20 +121,15 @@
                             <div class="sk-double-boun  ce2"></div>
                         </div>
                         <div class="table-responsive storeTypetable border-none">
-                            <table class="table table-hover">
+                            <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th><strong>S.NO</strong></th>
-                                        <th style="width: 25%;"><strong>Question</strong></th>
-                                        <th style="width: 25%;"><strong>Answer</strong></th>
-                                        <th style="width: 15%;"><strong>Category Name</strong></th>
-                                        <th><strong>Role</strong></th>
-                                        <th style="text-align: center;"><strong>Actions</strong></th>
+                                        <th style="width: 10px;"><strong>S.NO</strong></th>
+                                        <th style="width: 75%;"><strong>Category Name</strong></th>
+                                        <th style="width: 20%;"><strong>Actions</strong></th>
                                     </tr>
                                 </thead>
-                                <!-- <div style="max-height: 600px; overflow: auto;"> -->
                                 <tbody id="table"> </tbody>
-                                <!-- </div> -->
                             </table>
                             <div id="loader" class="loader" style="display: block;"></div>
                         </div>
@@ -168,7 +145,7 @@
             </div>
         </div>
     </div>
-    <!-- Add Faq -->
+    <!-- Add Faq Category -->
     <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
         <form id="addform" method="post" enctype="multipart/form-data" role="addform">
             <div class="modal-dialog modal-lg">
@@ -176,59 +153,26 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span
                                 aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Add faq</h4>
+                        <h4 class="modal-title">Add Faq Category</h4>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-8 col-md-7 col-12">
                                 <div class="form-group">
-                                    <label><b>Question (English)<span style="color: red;">*</span></b></label>
-                                    <input type="text" oninput="validate(this)" class="form-control" id="question"
-                                        name='question' placeholder="Enter Question in (English)" maxlength="100"
+                                    <label><b>Category Name (English)<span style="color: red;">*</span></b></label>
+                                    <input type="text" oninput="validate(this)" class="form-control" id="name1"
+                                        name='name1' placeholder="Enter Category Name in (English)" maxlength="30"
                                         required>
-                                    <h6 style="text-align: right;">100 Characters Max</h6>
+                                    <h6 style="text-align: right;">30 Characters Max</h6>
                                 </div>
                                 <div class="form-group">
-                                    <label><b>Question (Mesodonian)<span style="color: red;">*</span></b></label>
-                                    <input type="text" oninput="validate(this)" class="form-control" id="messo_question"
-                                        name='messo_question' placeholder="Enter Question in (Mesodonian)"
-                                        maxlength="100" required>
-                                    <h6 style="text-align: right;">100 Characters Max</h6>
+                                    <label><b>Category Name (Mesodonian)<span style="color: red;">*</span></b></label>
+                                    <input type="text" oninput="validate(this)" class="form-control" id="messo_name1"
+                                        name='messo_name1' placeholder="Enter Category Name in (Mesodonian)"
+                                        maxlength="30" required>
+                                    <h6 style="text-align: right;">30 Characters Max</h6>
                                 </div>
-                                <div class="form-group">
-                                    <label><b>Answer (English)<span style="color: red;">*</span></b></label>
-                                    <textarea class="form-control" rows="3" oninput="validate(this)" id="answer"
-                                        name='answer' placeholder="Enter Answer in (English)" maxlength="200"
-                                        required></textarea>
-                                    <h6 style="text-align: right;">200 Characters Max</h6>
-                                </div>
-                                <div class="form-group">
-                                    <label><b>Answer (Mesodonian)<span style="color: red;">*</span></b></label>
-                                    <textarea rows="3" oninput="validate(this)" class="form-control" id="messo_answer"
-                                        name='messo_answer' placeholder="Enter Answer in (Mesodonian)" maxlength="200"
-                                        required></textarea>
-                                    <h6 style="text-align: right;">200 Characters Max</h6>
-                                </div>
-                                <div class="form-group">
-                                    <h4>Select Category Type<span style="color: red;">*</span></h4>
-                                    <select class="form-control" name="catId" id="catId" required>
-                                        <option disabled value="" hidden selected>Select Category
-                                        </option>
-                                        <input type="text" class="categoryId" style="display: none;" name="catId1"
-                                            id="catId1">
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label><b>Role<span style="color: red;">*</span></b></label>
-                                    <select class="form-control" id="role" name='role'
-                                        placeholder="Enter Answer in (Mesodonian)" required>
-                                        <option value="" disabled hidden selected>Select</option>
-                                        <option value="businessOwner">Business Owner</option>
-                                        <option value="customer">Customer</option>
-                                        <option value="deliveryPerson">Delivery Person</option>
 
-                                    </select>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -242,7 +186,7 @@
         </form>
     </div>
 
-    <!-- Edit faq -->
+    <!-- Edit Faq Category -->
     <div class="modal inmodal fade" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
         <form id="editform" method="post" enctype="multipart/form-data" role="editform">
             <div class="modal-dialog modal-lg">
@@ -250,59 +194,26 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span
                                 aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Edit faq</h4>
+                        <h4 class="modal-title">Edit Faq Category</h4>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-8 col-md-7 col-12">
                                 <div class="form-group">
-                                    <label><b>Question (English)<span style="color: red;">*</span></b></label>
-                                    <input type="text" oninput="validate(this)" class="form-control" id="question1"
-                                        name='question1' placeholder="Enter Question in (English)" maxlength="100"
+                                    <label><b>Category Name (English)<span style="color: red;">*</span></b></label>
+                                    <input type="text" oninput="validate(this)" class="form-control" id="name"
+                                        name='name' placeholder="Enter Category Name in (English)" maxlength="30"
                                         required>
-                                    <h6 style="text-align: right;">100 Characters Max</h6>
+                                    <h6 style="text-align: right;">30 Characters Max</h6>
                                 </div>
                                 <div class="form-group">
-                                    <label><b>Question (Mesodonian)<span style="color: red;">*</span></b></label>
-                                    <input type="text" oninput="validate(this)" class="form-control" id="messo_question1"
-                                        name='messo_question1' placeholder="Enter Question in (Mesodonian)"
-                                        maxlength="100" required>
-                                    <input type="text" class="form-control" id="faqId" name='faqId'
+                                    <label><b>Category Name (Mesodonian)<span style="color: red;">*</span></b></label>
+                                    <input type="text" oninput="validate(this)" class="form-control" id="messo_name"
+                                        name='messo_name' placeholder="Enter Category Name in (Mesodonian)"
+                                        maxlength="30" required>
+                                    <input type="text" class="form-control" id="faqCatId" name='faqCatId'
                                         style="display: none;">
-                                    <h6 style="text-align: right;">100 Characters Max</h6>
-                                </div>
-                                <div class="form-group">
-                                    <label><b>Answer (English)<span style="color: red;">*</span></b></label>
-                                    <textarea class="form-control" rows="3" oninput="validate(this)" id="answer1"
-                                        name='answer1' placeholder="Enter Answer in (English)" maxlength="200"
-                                        required></textarea>
-                                    <h6 style="text-align: right;">200 Characters Max</h6>
-                                </div>
-                                <div class="form-group">
-                                    <label><b>Answer (Mesodonian)<span style="color: red;">*</span></b></label>
-                                    <textarea rows="3" oninput="validate(this)" class="form-control" id="messo_answer1"
-                                        name='messo_answer1' placeholder="Enter Answer in (Mesodonian)" maxlength="200"
-                                        required></textarea>
-                                    <h6 style="text-align: right;">200 Characters Max</h6>
-                                </div>
-                                <div class="form-group">
-                                    <h4>Select Category Type<span style="color: red;">*</span></h4>
-                                    <select class="form-control" name="catId2" id="catId2" required>
-                                        <option disabled value="" hidden selected>Select Category
-                                        </option>
-                                        <input type="text" class="categoryId" style="display: none;" name="catId12"
-                                            id="catId12">
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label><b>Role<span style="color: red;">*</span></b></label>
-                                    <select class="form-control" id="role12" name='role12'
-                                        placeholder="Enter Answer in (Mesodonian)" required>
-                                        <option value="" disabled hidden selected>Select</option>
-                                        <option value="businessOwner">Business Owner</option>
-                                        <option value="customer">Customer</option>
-                                        <option value="deliveryPerson">Delivery Person</option>
-                                    </select>
+                                    <h6 style="text-align: right;">30 Characters Max</h6>
                                 </div>
                             </div>
                         </div>
@@ -353,26 +264,20 @@
             e.preventDefault();
             var formData = new FormData(this);
             const obj = {
-                question: document.getElementById('question').value,
-                messo_question: document.getElementById('messo_question').value,
-                answer: document.getElementById('answer').value,
-                messo_answer: document.getElementById('messo_answer').value,
-                role: document.getElementById('role').value,
-                faq_cat: document.getElementById('catId').value
+                name: document.getElementById('name1').value,
+                messo_name: document.getElementById('messo_name1').value
             }
             document.getElementById('cancel').disabled = true
             const submitButton = document.getElementById("Submit");
             submitButton.disabled = true;
             submitButton.innerHTML = "Submitting...";
             $.ajax({
-                url: host + `/api/v1/common/faq/add`,
+                url: host + `/api/v1/common/faq/addFaqCat`,
                 type: 'Post',
                 data: obj,
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader('Authorization', token);
-                },
-                // contentType: false,
-                // processData: false,
+                }
             }).done(function (data) {
                 // If successful
                 document.getElementById('cancel').disabled = false
@@ -380,8 +285,7 @@
                 submitButton.disabled = false;
                 submitButton.innerHTML = "Add";
                 $('#myModal5').modal('hide');
-                faqList();
-                // window.location.reload();
+                faqCategoryList();
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 // If fail
                 document.getElementById('cancel').disabled = false
@@ -395,21 +299,16 @@
             e.preventDefault();
             var formData = new FormData(this);
             const obj = {
-                question: document.getElementById('question1').value,
-                messo_question: document.getElementById('messo_question1').value,
-                answer: document.getElementById('answer1').value,
-                messo_answer: document.getElementById('messo_answer1').value,
-                role: document.getElementById('role12').value,
-                faq_cat: document.getElementById('catId2').value,
-                faqId: document.getElementById('faqId').value
+                name: document.getElementById('name').value,
+                messo_name: document.getElementById('messo_name').value,
+                faqCatId: document.getElementById('faqCatId').value
             }
-            formData.append('role', document.getElementById('role12').value)
             document.getElementById('cancel1').disabled = true
             const submitButton = document.getElementById("Submit1");
             submitButton.disabled = true;
             submitButton.innerHTML = "Submitting...";
             $.ajax({
-                url: host + `/api/v1/common/faq/edit`,
+                url: host + `/api/v1/common/faq/editFaqCat`,
                 type: 'Put',
                 data: obj,
                 beforeSend: function (xhr) {
@@ -423,7 +322,7 @@
                 submitButton.disabled = false;
                 submitButton.innerHTML = "Add";
                 $('#myModal2').modal('hide');
-                faqList();
+                faqCategoryList();
                 // window.location.reload();
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 // If fail

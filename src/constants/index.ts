@@ -28,8 +28,8 @@ export const errors = {
         "categoryWithSameName": "Category with {{catName}} Name already exist.",
         "exploreWithSameName": "Explore with {{exploreName}} Name already exist.",
         "categoryIdRequired": "CategoryId required",
-        "exploreIdRequired":'ExploreId required',
-        "isActiveRequired":"IsActive key Required"
+        "exploreIdRequired": 'ExploreId required',
+        "isActiveRequired": "IsActive key Required"
     },
     mace: {
         "invalidAddress": "Not a valid address",
@@ -60,8 +60,8 @@ export const errors = {
         "categoryWithSameName": "Category with {{catName}} Name already exist.",
         "exploreWithSameName": "Explore with {{exploreName}} Name already exist.",
         "categoryIdRequired": "CategoryId required",
-        "exploreIdRequired":'ExploreId required',
-        "isActiveRequired":"IsActive key Required"
+        "exploreIdRequired": 'ExploreId required',
+        "isActiveRequired": "IsActive key Required"
 
     }
 }
@@ -92,11 +92,11 @@ export const success = {
         "bookingGenerated": "booking Generated Successfully",
         "logOutSuccessful": "User logOut successfully",
         "userComment": "User Comments successfully",
-        "updateSuccefully":"Update Successfully",
-        "addRestaurant":"Restaurant added successfully",
-        "doc_upload":"Documents uploaded successfully",
-        "updateStatus":"Status updated successfully",
-        "success":"success"
+        "updateSuccefully": "Update Successfully",
+        "addRestaurant": "Restaurant added successfully",
+        "doc_upload": "Documents uploaded successfully",
+        "updateStatus": "Status updated successfully",
+        "success": "success"
     },
     mace: {
         "signupSuccessful": "Signup sucessfully",
@@ -121,12 +121,22 @@ export const success = {
         "bookingGenerated": "booking Generated Successfully",
         "logOutSuccessful": "User logOut successfully",
         "userComment": "User Comments successfully",
-        "updateSuccefully":"Update Successfully",
-        "addRestaurant":"Restaurant added successfully",
-        "doc_upload":"Documents uploaded successfully",
-        "updateStatus":"Status updated successfully",
-        "success":"success"
+        "updateSuccefully": "Update Successfully",
+        "addRestaurant": "Restaurant added successfully",
+        "doc_upload": "Documents uploaded successfully",
+        "updateStatus": "Status updated successfully",
+        "success": "success"
     }
+}
+
+export const topics = {
+    "All Customers": 'All_Customers',
+    "All Business Owners": 'All_Business_Owners',
+    "All Delivery Persons": 'All_Delivery_Persons',
+    "All Customers & Business Owners": 'All_Customers_Business_Owners',
+    "All Customers & Delivery Persons": 'All_Customers_Delivery_Persons',
+    "All Delivery Persons & Business Owners": 'All_Delivery_Persons_Business_Owners',
+    'All': 'All_Customers_Business_Owners_Delivery_Persons'
 }
 
 
