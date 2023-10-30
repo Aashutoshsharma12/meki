@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin | Jroute</title>
+    <link rel="icon" href="../../admin/assets/img/trucklogo.png" type="image">
+
+    <link rel="stylesheet" href="../../admin/assets/paginate/bs-pagination.min.css">
+    <script src="//code.jquery.com/jquery.min.js"></script>
+    <script src="../../admin/assets/paginate/pagination.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/cloudinary-core/2.10.0/cloudinary-core-shrinkwrap.min.js"></script>
+
+    <!--<link rel="stylesheet" href="dist/pagination.min.css">-->
+    <link href="../../admin//assets/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="../../admin/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../admin/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="../../admin/assets/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="../../admin/assets/css/animate.css" rel="stylesheet">
+    <link href="../../admin/assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../../admin/assets/paginate/pagination.min.css">
+
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <script src="../../admin/scripts/common/pipeline.js"></script>
+    <script src="../../admin/scripts/common/validation.js"></script>
+    <script src="../../admin/scripts/helper/logout.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <!-- moment -->
+    <script src="https://momentjs.com/downloads/moment.js"></script>
+    <!-- js files -->
+    <script src="../../admin/scripts/auth/logout.js"></script>
+    <script src="../../admin/scripts/listing/deliveryPerson.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-messaging.js"></script>
+    <script src="../../admin/scripts/index/index.js"></script>
+    <style type="text/css">
+        .container {
+            margin: 100px auto;
+        }
+
+        #search::placeholder{
+            font-size: 12px;
+        }
+
+        .edit_cat_file {
+            position: absolute;
+            top: 0px;
+            height: 200px;
+            width: 205px;
+            left: 13px;
+            opacity: 0;
+            z-index: -1;
+            cursor: pointer;
+        }
+
+        .edit_cancel {
+            border-color: #1AB394;
+            color: #1AB394;
+            padding: 5px 25px;
+            border-radius: 8px;
+        }
+
+        @media only screen and (max-width: 992px) {
+            .lastline {
+                margin: 0px !important;
+                width: 100% !important;
+                display: inline-block !important;
+            }
+        }
+    </style>
+
+</head>
+
+<body onload="deliveryPersonList()">
+    <div id="wrapper" style="display: none;">
+        <navbar></navbar>
+        <div id="page-wrapper" class="gray-bg">
+            <div class="border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 menuBtn" href=""><i class="fa fa-bars"></i>
+                        </a>
+                        <form role="search" class="navbar-form-custom" action="search_results.html">
+                        </form>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span class="m-r-sm text-muted welcome-message">Welcome to Meki Admin </span>
+                        </li>
+                        <li><a class="dropdown-item" onclick="logout()">Logout <img
+                                    src="../../../admin/assets/img/logout .png"></a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="wrapper border-bottom page-heading ">
+                <div class="d-flex justify-content-between align-items-center pageheading bg-light p-3">
+                    <h1><strong>All Delivery Person </strong></h1>
+                    <div class="d-flex align-items-center">
+                        <select onchange="deliveryPersonList();" class="btn btn-white btn-lg" style="margin-right: 20px;" placeholder="Status"
+                            id="status">
+                            <option disabled value="" hidden selected>Status</option>
+                            <option value=true>Online</option>
+                            <option value=false >Offline</option>
+                        </select>
+                        <input type="text" oninput="validate(this)" style="width: 60%;margin-right: 4px;"
+                            placeholder="Search by name or mobile No." id="search" class="form-control" />
+                        <button class="btn btn-info btn-lg" id="btnId" onclick="deliveryPersonList()">Search</button>
+                    </div>
+                </div>
+
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="ibox-content">
+                        <div class="sk-spinner sk-spinner-double-bounce">
+                            <div class="sk-double-bounce1"></div>
+                            <div class="sk-double-boun  ce2"></div>
+                        </div>
+                        <div class="table-responsive storeTypetable border-none">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th><strong>#id</strong></th>
+                                        <th><strong>Image</strong></th>
+                                        <th><strong>Name</strong></th>
+                                        <th><strong>Contact</strong></th>
+                                        <th><strong>Status</strong></th>
+                                        <th><strong>Actions</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table"> </tbody>
+                            </table>
+                            <div id="loader" class="loader" style="display: block;"></div>
+                        </div>
+                        <div class="alert alert-primary hide" style="display: none;" id="noData" role="alert">
+                            No data found
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                    <div class="box" id="page1">
+                        <ul id="example-1" class="pagination"></ul>
+                    </div>
+                </div>
+                <footer></footer>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="../../admin/assets/js/jquery-3.1.1.min.js"></script>
+    <script src="../../admin/assets/js/popper.min.js"></script>
+    <script src="../../admin/assets/js/bootstrap.js"></script>
+    <script src="../../admin/assets/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../../admin/assets/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Peity -->
+    <script src="../../admin/assets/js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="../../admin/assets/js/inspinia.js"></script>
+    <script src="../../admin/assets/js/plugins/pace/pace.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="../../admin/assets/js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Peity -->
+    <script src="../../admin/assets/js/demo/peity-demo.js"></script>
+    <script type="text/javascript" src="../../admin/assets/paginate/pagination.min.js"></script>
+    <script src="assets/js/plugins/sweetalert/sweetalert.min.js"></script>
+
+    <script>
+        var token = localStorage.getItem("token");
+        var host = window.location.protocol + "//" + window.location.host;
+        if (!token) {
+            localStorage.removeItem("name");
+            localStorage.removeItem("token");
+            window.location.replace('/admin/login');
+        }
+        
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                if (document.getElementById('search').value) {
+                    document.getElementById("btnId").click();
+                }
+            }
+        });
+    
+    
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="../../../web/assets/images/favicon.ico" sizes="50x12" />
+    <!-- goolgle api -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZmB3X3IzXru66uMfDH1jwlewKCMHBjqE&callback=initAutocomplete&libraries=places">
+        </script> -->
+    <!-- <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZmB3X3IzXru66uMfDH1jwlewKCMHBjqE&callback=initAutocomplete&libraries=places">
+        </script> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../../../web/assets/css/chat.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="../../../web/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../web/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../../web/assets/css/carousel.css">
+
+    <!-- sweet alert library -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <!-- js files -->
+    <script src="../../web/scripts/dashboard.js"></script>
+    <script src="../../web/scripts/faq.js"></script>
+    <script src="../../web/scripts/report_issues.js"></script>
+    <script src="../../web/scripts/chat.js"></script>
+
+
+
+    <!-- moment -->
+    <script src="https://momentjs.com/downloads/moment.js"></script>
+
+    <!-- jQuery library -->
+    <script src="../../../web/assets/js/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.2/css/intlTelInput.css'>
+    <link rel='stylesheet' href='https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css'>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.2/js/intlTelInput.js'></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="../../../web/assets/js/bootstrap.js"></script>
+    <!-- socket --- -->
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+        integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+        crossorigin="anonymous"></script>
+    <script type="module">
+        import { io } from "https://cdn.socket.io/4.5.0/socket.io.esm.min.js";
+    </script>
+    <!-- <title>SSVAN Chatting </title> -->
+</head>
+
+<body>
+    <!-- -----header---------------------------------------------------- -->
+    <div id="wrapper" style="display: none;">
+        <navbar></navbar>
+        <div class="container-fluid chat_container">
+            <section class="chat_cont pt-5">
+                <div class="chat_heading">
+                    <a href="/issue_tracker">
+                        <img class="prev" src="../../../web/assets/images/newImages/prev.svg" />
+                    </a>
+                    <div class="issu_id">
+                        <h3>Issue ID: <span id="issueId"></span></h3>
+                        <h3> Title : <span id="title"></span></h3>
+                        <h3>Trip ID : <span id="tripId"></span></h3>
+                    </div>
+                </div>
+                <div class="chat_sec">
+                    <section class="chat">
+                        <div class="container1">
+                            <div class="row bootstrap snippets">
+                                <div class="col-md-12" id="kk">
+                                    <div class="box box-danger direct-chat direct-chat-danger" id="k">
+                                        <div class="box-body" id="newDiv">
+                                            <div class="direct-chat-messages dynamic-fields3" id="dynamicClass">
+                                                <div class="direct-chat-msg" id="adminChating" style="display: none;">
+                                                    <div class="direct-chat-info clearfix">
+                                                        <span class="direct-chat-timestamp pull-left"
+                                                            id="admin_date"></span>
+                                                    </div>
+                                                    <img class="direct-chat-img" id="admin_pic"
+                                                        src="https://bootdey.com/img/Content/user_1.jpg"
+                                                        alt="Message User Image">
+                                                    <div class="direct-chat-text" id="admin_message">
+                                                    </div>
+                                                </div>
+                                                <div class="direct-chat-msg right" id="vendor_class">
+                                                    <div class="direct-chat-info clearfix">
+                                                        <span class="direct-chat-timestamp pull-right"
+                                                            id="vender_date"></span>
+                                                    </div>
+                                                    <img class="direct-chat-img" id="vendor_pic"
+                                                        src="https://bootdey.com/img/Content/user_2.jpg"
+                                                        alt="Message User Image">
+                                                    <div class="direct-chat-text" id="vendor_message">
+                                                    </div>
+                                                    <div class="direct-chat-text" id="image">
+                                                        <img id="vendor_image" style="height: 59px;width: 150px;"
+                                                            src=".." />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="box-footer">
+                                            <div class="input-group">
+                                                <input type="text" name="message" id="message"
+                                                    placeholder="Type a message here " class="form-control">
+                                                <span class="input-group-btn">
+                                                    <button type="submit" class="btn btn-flat" id="button"><img
+                                                            src="../../web/assets/images/chat.svg" /></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // var connected = false
+        var host = window.location.protocol + "//" + window.location.host;
+        var token = localStorage.getItem("token");
+        if (!token) {
+            localStorage.removeItem('name')
+            localStorage.removeItem("userToken")
+            localStorage.removeItem("token")
+            localStorage.removeItem("userRole")
+            window.location.replace('/landing')
+        }
+        var socket = io(`${host}/logiTrx`);
+        socket.on('connect', function () {
+            console.log('check:', socket.connected);
+            connected = true
+        });
+        socket.on('chat_message', data => {
+            console.log(data, "receive_message")
+            const dateFormat = moment(data.date).format('D MMM hh:mm a')
+            document.getElementById('newDiv').innerHTML += `
+        <div class="direct-chat-messages dynamic-fields3" id="dynamicClass">
+            <div class="direct-chat-msg" id="adminChating">
+                <div class="direct-chat-info clearfix">
+                    <span class="direct-chat-timestamp pull-left">${dateFormat}</span>
+                </div>
+                <img class="direct-chat-img" id="admin_pic"
+                    src="https://bootdey.com/img/Content/user_1.jpg"
+                    alt="Message User Image">
+                <div class="direct-chat-text" id="admin_mesage">${data.message}
+                </div>
+            </div>
+        </div>`
+        });
+    
+        //******Search value by Enter**************/
+        $("#message").keyup(function (event) {
+            if (event.keyCode === 13) {
+                $("#button").click();
+    
+            }
+        });
+    
+        //******Not Blank value in  Message Text******/
+        $('#button').click(function (e) {
+            if ($('#message').val().trim().length > 0) {
+                send_message()
+            }
+            else {
+                alert('Please Fill The Message Text');
+                return
+            }
+        });
+    
+        var objDiv = document.getElementById("kk");
+        objDiv.scrollTop = objDiv.scrollHeight;
+        console.log(objDiv.scrollHeight, ";l[polo", objDiv.scrollTop, ";llklklklkkmlklkk")
+    
+    </script>
+</body>
+
+</html>
